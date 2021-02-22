@@ -1,29 +1,32 @@
 /**
  * desconstructor cannot emit exception
  **/
+
 #include <iostream>
+
 class Myclass
 {
 private:
     /* data */
-    int a;
+    int m_a;
 public:
-    Myclass(/* args */){
-    std::cout << "constructor" << std::endl; 
+    Myclass(int a){
+    std::cout << "constructor " << a << std::endl;
+    m_a = a;
 }
     ~Myclass(){
-    std::cout << "desconstructor" << std::endl;
+    std::cout << "desconstructor " << m_a << std::endl;
 }
     void zz(){ std::cout << __FUNCTION__ << std::endl; }
 };
 void func()
 {
     std::cout << "1" << std::endl;
-    Myclass zz1;
+    Myclass zz1(1);
     std::cout << "2" << std::endl;
     try
     {
-        Myclass zz;
+        Myclass zz(2);
         throw 1;
     }
     catch(Myclass& zz)
