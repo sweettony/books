@@ -1,4 +1,4 @@
-#include <iostream>
+# include <iostream>
 
 class Myclass
 {
@@ -6,7 +6,7 @@ private:
 
 public:
     Myclass();
-    ~Myclass()
+    ~Myclass();
 public:
     // only interface, abstract class
     virtual int a() = 0;
@@ -23,7 +23,9 @@ private:
 
 int main()
 {
-
+#if ZZ
+    std::cout << "zzzz" << std::endl;
+#endif
 
     return 0;
 }
