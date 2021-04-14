@@ -1,4 +1,20 @@
-# hi md
+
+# Contents
+
+<font size = 5>
+
+1. [Static member](#static&nbsp;member)
+    - [Example code](#example&nbsp;code)
+
+</font>
+
+
+
+
+## static member
+
+### example code
+
 
 ```c++
 template<typename T>
@@ -17,22 +33,6 @@ class base
         static T m_z;
 };
 template<typename T> T base<T>::m_z;
-
-
-// template<>
-// class base<int>
-// {
-//     protected:
-//         base()
-//         {
-
-//         }
-//         ~base()
-//         {
-
-//         }
-//   };
-
 
 template<typename T, int size>
 class derived : public base<T>
@@ -56,5 +56,7 @@ class derived : public base<T>
         static T m_d;
 };
 template<typename T, int size> T derived<T, size>::m_d;
-
 ````
+
+
+>static 在父类中共享；在子类不共享
