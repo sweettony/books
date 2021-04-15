@@ -4,8 +4,7 @@
 <font size = 5>
 
 1. [Static member](#static&nbsp;member)
-    - [Example code](#example&nbsp;code)
-
+    - <font size = 4> [Example code](#example-code) </font>
 </font>
 
 
