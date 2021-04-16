@@ -27,7 +27,7 @@ provides an abstraction within the kernel which allows different filesystem impl
 
 ### Function
 >The VFS implements the open(2), stat(2), chmod(2), and similar system calls. The pathname argument that is passed to them is used by the VFS to search through the directory entry cache (also known as the dentry cache or dcache) This provides a very fast look-up mechanism to translate a pathname (filename) into a specific dentry. Dentries live in RAM and are never saved to disc: they exist only for performance.  
-提供一种非常块的查找机制；把文件名的路径转换为特定的文件夹目录。这些文件目录存在内存RAM中；并且不会保存到磁盘：他们的存在只是为了执行效率。
+提供一种非常快的查找机制；把文件名的路径转换为特定的文件夹目录。这些文件目录存在内存RAM中；并且不会保存到磁盘：他们的存在只是为了执行效率。
 
 ### implemetaiton details
 >The dentry cache is meant to be a view into your entire filespace. As most computers cannot fit all dentries in the RAM at the same time, some bits of the cache are missing. In order to resolve your pathname into a dentry, the VFS may have to resort to creating dentries along the way, and then loading the inode. This is done by looking up the inode.  
@@ -50,9 +50,21 @@ provides an abstraction within the kernel which allows different filesystem impl
 第一步需要分配file的内存。  
 第二步需要把获得的inode结点对file结构初始化。
 
->The open() file method is then called so the specific filesystem implementation can do its work. You can see that this is another switch performed by the VFS. The file structure is placed into the file descriptor table for the process.  
-最后open函数被调用，所以不同的文件系统都能工作。你可以看到这是另一个**VFS**的转换。分配出来的file struct会被放到相应**进程的file descriptor table**。
+>The `open()` file method is then called so the specific filesystem implementation can do its work. You can see that this is another switch performed by the VFS. The file structure is placed into the file descriptor table for the process.  
+最后open函数被调用，所以不同的文件系统都能工作。你可以看到这是另一个**VFS**的转换。分配出来的file struct会被放到相应**进程的file descriptor table**。  
 
+# Registering and mounting a Filesystem
+>register API
 
+```c
+    #include <linux/fs.h>
+    extern int register_filesystem(struct file_system_type *);
+    extern int unregister_filesystem(struct file_system_type *);
+```
+
+>`struct file_system_type` describle your filesystem. When a request is made to mount a filesystem onto a directory in your namespace, the VFS will call the appropriate mount() method for the specific filesystem. New vfsmount referring to the tree returned by ->mount() will be attached to the mountpoint, so that when pathname resolution reaches the mountpoint it will jump into the root of that vfsmount.
+
+>how to see all filesystems that are registered to the kernel?  
+cat /proc/filesystem
 
 
