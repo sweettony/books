@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include <unistd.h>
 
 int main()
 {
@@ -10,5 +10,10 @@ int main()
     FILE* p = fopen("./print.txt", "a+");
     fprintf(p, "%d    hi baby    you know\n", 1201);
     fclose(p);
+    while (1)
+    {
+        sleep(10);
+    }
+    
     return 0;
 }
