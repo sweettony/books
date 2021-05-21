@@ -17,22 +17,6 @@ class base
 };
 template<typename T> T base<T>::m_z;
 
-
-// template<>
-// class base<int>
-// {
-//     protected:
-//         base()
-//         {
-
-//         }
-//         ~base()
-//         {
-
-//         }
-//   };
-
-
 template<typename T, int size>
 class derived : public base<T>
 {
