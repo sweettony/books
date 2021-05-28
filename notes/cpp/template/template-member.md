@@ -58,3 +58,30 @@ than we want. such as int -> short
         Demo(const Demo<U>& r)
     }
 ```
+
+## friend function
+* how to wirte friend function of class template  
+    * No.1  
+``` c++ 
+    template <typename T> class A;
+    template <typename T> A<T> function(const A<T>& l , const A<T>& r);
+    template <typename T> class A
+    {
+        //template instance, cannot definition and need forward declaration.
+        friend A<T> function<T>(const A<T>& l , const A<T>& r); 
+    };
+    template <typename T> A<T> function(const A<T>& l , const A<T>& r)
+    {
+        ...
+    }  
+```
+*    * No.2
+``` c++ 
+    template <typename T> class A
+    {
+        friend A function(const A& l , const A& r)
+        {
+            ...
+        }
+    };
+``` 
