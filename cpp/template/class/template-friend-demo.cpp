@@ -28,8 +28,8 @@ template<typename T> A<T> operator*(const A<T>& l, const A<T>& r)
 int main()
 {
   A<int> a;
-  A<int> b;
-//  int b;
+  //A<int> b;
+  int b;
   a * b;
   return 0;
 }
