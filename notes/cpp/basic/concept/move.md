@@ -205,6 +205,18 @@ lvalues   xvalues   prvalues
 - **A named rvalue reference is an lvalue, just like any other variable.**
     - the compiler will complain that `parameter` is an lvalue. If you look at its type, you see an rvalue reference, but an rvalue reference simply means "a reference that is bound to an rvalue"; it does not mean that the reference itself is an rvalue! Indeed, `parameter` is just an ordinary variable with a name. You can use `parameter` as often as you like inside the body of the constructor, and it always denotes the same object. Implicitly moving from it would be dangerous, hence the language forbids it.
     - You can also pass the parameter by value. For move-only types like unique_ptr, it seems there is no established idiom yet. Personally, I prefer to pass by value, as it causes less clutter in the interface.
+```c++
+    class Foo
+    {
+        unique_ptr<Shape> member;
+
+    public:
+
+        Foo(unique_ptr<Shape>&& parameter)
+        : member(parameter)   // error
+        {}
+    };
+```
 
 ## unified assignment
 ```c++
