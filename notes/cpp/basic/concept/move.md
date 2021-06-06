@@ -218,7 +218,7 @@ lvalues   xvalues   prvalues
     };
 ```
 
-## unified assignment
+## Unified assignment
 ```c++
     X& X::operator=(X source)    // unified assignment operator
     {
@@ -230,10 +230,10 @@ lvalues   xvalues   prvalues
     // 2. the argument is rvalue
     // move construcor call----> swap using move sementic
 ```
-## forwarding reference
-- see forward-reference.md
+## Forwarding reference
+- See forward-reference.md
 
-## implementation of `move`
+## Implementation of `move`
 - As you can see, move accepts any kind of parameter thanks to the forwarding reference T&&, and it returns an rvalue reference. The `std::remove_reference<T>::type` meta-function call is necessary because otherwise, for lvalues of type X, the return type would be X& &&, which would collapse into X&. Since t is always an lvalue (remember that a named rvalue reference is an lvalue), but we want to bind t to an rvalue reference, we have to explicitly cast t to the correct return type. The call of a function that returns an rvalue reference is itself an xvalue. Now you know where xvalues come from ;)
 - The call of a function that returns an rvalue reference, such as `std::move`, is an xvalue.
 ```c++
