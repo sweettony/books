@@ -1,4 +1,10 @@
-## contents
+# Move
+1. [move concept](##move%20concept)  
+2. [important in some ways](##important%20in%20some%20ways)  
+3. [what is move?](##what%20is%20move?)  
+4. [dangerous and harmless moves](##dangerous%20and%20harmless%20moves)  
+5. [why it is dangerous or harmless](##why%20it%20is%20dangerous%20or%20harmless)  
+
 ## move concept
 - Move semantics allows an object, under certain conditions, to **take ownership of some other object's external resources.**
 
@@ -231,7 +237,7 @@ lvalues   xvalues   prvalues
     // move construcor call----> swap using move sementic
 ```
 ## Forwarding reference
-- See forward-reference.md
+[forward-reference](./forward-reference.md)  
 
 ## Implementation of `move`
 - As you can see, move accepts any kind of parameter thanks to the forwarding reference T&&, and it returns an rvalue reference. The `std::remove_reference<T>::type` meta-function call is necessary because otherwise, for lvalues of type X, the return type would be X& &&, which would collapse into X&. Since t is always an lvalue (remember that a named rvalue reference is an lvalue), but we want to bind t to an rvalue reference, we have to explicitly cast t to the correct return type. The call of a function that returns an rvalue reference is itself an xvalue. Now you know where xvalues come from ;)

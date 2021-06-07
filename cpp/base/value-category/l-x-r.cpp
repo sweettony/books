@@ -1,4 +1,5 @@
 #include <iostream>
+#include <utility>
 
 int test()
 {
@@ -36,11 +37,7 @@ int main()
     func(3);
     int a = 3;
     func(a);
-    func(create_cc());
-    int& b = a;
-    struct cc s;
-    struct cc& s1 = s;
-    func1(b);
-    func1(s1);
+    int&& b = std::move(a);
+    int&& c = std::move(b);
     return 0;
 }
