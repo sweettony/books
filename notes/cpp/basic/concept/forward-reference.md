@@ -1,5 +1,16 @@
 # Universal References
-reference:  [universal reference](https://isocpp.org/blog/2012/11/universal-references-in-c11-scott-meyers)
+<p></br></p>
+
+1. [universal reference](https://isocpp.org/blog/2012/11/universal-references-in-c11-scott-meyers)  
+2. [Two meaning of `&&`](##%20Two%20;meaning%20;of%20;`&&`)  
+3. [How to distinguish two types of `&&`](##%20How%20to%20distinguish%20two%20types%20of%20"&&")
+4. [`std::forward`](##%20`std::forward`)
+5. [Nitty Gritty Details](##%20Nitty%20Gritty%20Details)
+6. [`auto` type deduction](##%20`auto`%20type%20deduction)
+7. [`typedef`](##%20`typedef`)
+8. [`decltype`](##%20`decltype`)
+
+<p></br></br></p>
 
 ## Two meaning of `&&`
 - Rvalue reference
@@ -27,7 +38,7 @@ reference:  [universal reference](https://isocpp.org/blog/2012/11/universal-refe
     int func(T&&) [with T = int&]
 ```
   
-## How to distinguish two types of "&&".
+## How to distinguish two types of `&&`.
 - **Key point.**
   - The essence of the issue is that “&&” in a `type declaration` sometimes means rvalue reference, but sometimes it means either rvalue reference or lvalue reference.
 - When the "&&" is universal reference
@@ -120,3 +131,4 @@ template <typename T> int func(T&& c)
 - The type-deduction rules employed by decltype are not the same as those used during template or auto type deduction.  
 - `decltype` performs type deduction on expressions that yield types that are either T or T&
 - given a named variable of non-reference type, deduces the type T (i.e., a non-reference type), while under the same conditions, templates and auto deduce the type T&.  Another important difference is that decltype’s type deduction depends only on the decltype expression; the type of the initializing expression (if any) is ignored
+
