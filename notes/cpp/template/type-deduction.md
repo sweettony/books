@@ -3,12 +3,39 @@
 <p></br></p>
 <p></br></p>
 
-2. [ParamType#is#Neither#a#Pointer#nor#a#Reference]
-1. [Array Arguments](##%20Array%20Arguments)
+1. [ParamType is a Pointer or a Reference](##%20ParamType%20is%20a%20Pointer%20or%20a%20Reference)  
+2. [ParamType is a Universal Reference](##%20ParamType%20is%20a%20Universal%20Reference)
+3. [ParamType is Neither a Pointer nor a Reference](##%20ParamType%20is%20Neither%20a%20Pointer%20nor%20a%20Reference)  
+4. [Array Arguments](##%20Array%20Arguments)
+5. [Function Arguments](##%20Function%20Arguments)
+6. [Summary](##%20Summary)
+7. [`auto`](##%20auto)
 
 <p></br></p>
 <p></br></p>
 
+## ParamType is a Pointer or a Reference
+- If expr’s type is a reference, ignore the reference part.Then pattern-match expr’s type against ParamType to determine T.
+```c++
+    template<typename T>
+    void f(T& param);       // param is a reference
+    int x = 27;             // x is an int
+    const int cx = x;       // cx is a const int
+    const int& rx = x;      // rx is a reference to x as a const int
+    f(x);                   // T is int, param's type is int&
+
+    f(cx);                  // T is const int,
+                            // param's type is const int&
+    f(rx);                  // T is const int,
+                            // param's type is const int&
+```
+
+<p></br></p>
+
+## ParamType is a Universal Reference
+- see [perfect forward reference](../basic/concept/forward-reference.md)
+
+<p></br></p>
 
 ## ParamType is Neither a Pointer nor a Reference
 - That means that param will be a copy of whatever is passed in—a completely new object. The fact that param will be a new object motivates the rules that govern how T is deduced from expr.
@@ -94,3 +121,22 @@
     //int func1(T&) [with T = int [3]]
     //int func2(T*) [with T = int]
 ```
+<p></br></p>
+
+## Function arguments
+- the same as array argument.
+
+<p></br></p>
+
+## Summary
+
+| ID | Things to remember |
+|:----|:-----------|
+|1|During template type deduction, arguments that are references are treated as non-references, i.e., their reference-ness is ignored.|
+|2|When deducing types for universal reference parameters, lvalue arguments get special treatment.|
+|3|When deducing types for by-value parameters, const and/or volatile arguments are treated as non-const and non-volatile.|
+|4|During template type deduction, arguments that are array or function names decay to pointers, unless they’re used to initialize references.|
+
+<p></br></p>
+
+## `auto`
