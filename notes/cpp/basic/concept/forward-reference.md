@@ -3,12 +3,12 @@
 
 1. [universal reference](https://isocpp.org/blog/2012/11/universal-references-in-c11-scott-meyers)  
 2. [Two meaning of `&&`](##%20Two%20;meaning%20;of%20;`&&`)  
-3. [How to distinguish two types of `&&`](##%20How%20to%20distinguish%20two%20types%20of%20"&&")
-4. [`std::forward`](##%20`std::forward`)
-5. [Nitty Gritty Details](##%20Nitty%20Gritty%20Details)
-6. [`auto` type deduction](##%20`auto`%20type%20deduction)
-7. [`typedef`](##%20`typedef`)
-8. [`decltype`](##%20`decltype`)
+3. [How to distinguish two types of `&&`](##%20How%20to%20distinguish%20two%20types%20of%20"&&")  
+4. [`std::forward`](##%20`std::forward`)  
+5. [Nitty Gritty Details](##%20Nitty%20Gritty%20Details)  
+6. [`auto` type deduction](##%20`auto`%20type%20deduction)  
+7. [`typedef`](##%20`typedef`)  
+8. [`decltype`](##%20`decltype`)  
 
 <p></br></br></p>
 
@@ -24,18 +24,18 @@
 
     auto&& val = 9;
 ```
-- Demo
-```c++
-    template <typename T> int func(T&& c)
-    {
-        std::cout << __PRETTY_FUNCTION__ << std::endl;
-        return 0;
-    }
-    func(10);
-    int a = 3;
-    func(a);
-    int func(T&&) [with T = int]
-    int func(T&&) [with T = int&]
+- Demo  
+```c++  
+    template <typename T> int func(T&& c)  
+    {  
+        std::cout << __PRETTY_FUNCTION__ << std::endl;  
+        return 0;  
+    }  
+    func(10);  
+    int a = 3;  
+    func(a);  
+    int func(T&&) [with T = int]  
+    int func(T&&) [with T = int&]  
 ```
   
 ## How to distinguish two types of `&&`.

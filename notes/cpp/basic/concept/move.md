@@ -14,19 +14,19 @@
 
 ## what is move?
 
-```c++
-      +---------------+
-      | triangle data |
-      +---------------+
-        ^
-        |
-        |
-        |
-  +-----|---+
-  |   +-|-+ |
-a | p | | | |
-  |   +---+ |
-  +---------+
+```c++  
+      +---------------+  
+      | triangle data |  
+      +---------------+  
+        ^  
+        |  
+        |  
+        |  
+  +-----|---+  
+  |   +-|-+ |  
+a | p | | | |  
+  |   +---+ |  
+  +---------+  
 
       +---------------+
       | triangle data |
@@ -44,12 +44,12 @@ a | p |   | |          b | p | | | |
 - in picture, the initialization of b with a does not copy the triangle, but instead transfers the ownership of the triangle from a to b. we also say "a is move into b" or "the triangle is move from a to b".
 - **To move an object means to transfer ownership of some resource it manages to another object.**
 
-## dangerous and harmless moves
-- **dangerous**
-```c++
-    auto_ptr<Shape> a(new Triangle);   // create triangle
-    auto_ptr<Shape> b(a);              // move a into b
-    double area = a->area();           // undefined behavior
+## dangerous and harmless moves  
+- **dangerous** 
+```c++  
+    auto_ptr<Shape> a(new Triangle);   // create triangle  
+    auto_ptr<Shape> b(a);              // move a into b  
+    double area = a->area();           // undefined behavior  
 ```
 - **harmful**
 ```c++
