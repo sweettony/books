@@ -34,8 +34,9 @@ int main()
 
     
     int ret = bind(fd, (struct sockaddr*)&client_addr, sizeof(struct sockaddr_in));
-    if(fd < 0)
+    if(ret < 0)
     {
+        //time-wait => [main, 39] : errno = 98, err = Address already in use
         sys_err(__FUNCTION__, __LINE__);
         return 0;
     }

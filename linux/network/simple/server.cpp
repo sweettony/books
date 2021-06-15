@@ -39,14 +39,18 @@ int main()
 
     
     int ret = bind(fd, (struct sockaddr*)&server_addr, sizeof(struct sockaddr_in));
-    if(fd < 0)
+    if(ret < 0)
     {
         sys_err(__FUNCTION__, __LINE__);
         return 0;
     }
 
     ret = listen(fd, 10);
-
+    if(ret < 0)
+    {
+        sys_err(__FUNCTION__, __LINE__);
+        return 0;
+    }
     struct sockaddr_in client_addr;
     pthread_t thread_id;
     struct server_param* parms;
@@ -54,6 +58,11 @@ int main()
     for(;;)
     {
         int connect_fd = accept(fd, (struct sockaddr*)&client_addr, &len);
+        if(connect_fd < 0)
+        {
+            sys_err(__FUNCTION__, __LINE__);
+            return 0;
+        }
         parms = new server_param();
         parms->sock_fd = connect_fd;
         memcpy(&parms->client_addr, &client_addr, sizeof(struct sockaddr_in));
@@ -94,6 +103,10 @@ void* thread_proc(void* param)
                 
                 default:
                     break;
+            }
+            if(buff[0] == '3')
+            {
+                break;
             }
         }
         else if (ret <= 0)
