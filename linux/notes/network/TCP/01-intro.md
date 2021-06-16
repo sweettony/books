@@ -38,4 +38,6 @@ not receive any additional data on the connection.
 - The TCP on the system that receives this final FIN (the end that did the active close) acknowledges the FIN.
 <p></br></p>
 
-## TCP State Transition Diagram  
+## TCP State Transition Diagram
+![image](image/tcp-transition-state.png)
+
