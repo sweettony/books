@@ -5,6 +5,8 @@
 - [TCP Options](#tcp-options)
 - [TCP Connection Termination](#tcp-connection-termination)
 - [TCP State Transition Diagram](#tcp-state-transition-diagram)
+  - [Watch packets](#watch-packets)
+- [TIME_WAIT State](#time_wait-state)
 
 
 ## Three-way handshake
@@ -40,4 +42,23 @@ not receive any additional data on the connection.
 
 ## TCP State Transition Diagram
 ![image](image/tcp-transition-state.png)
+
+### Watch packets
+![image](image/tcp-packets-exchanged.png)
+- It is important to notice in Figure 2.5 that if the entire purpose of this connection
+was to send a one-segment request and receive a one-segment reply, there would be
+eight segments of overhead involved when using TCP. If UDP was used instead, only
+two packets would be exchanged: the request and the reply. But switching from TCP to
+UDP removes all the reliability that TCP provides to the application, pushing lots of
+these details from the transport layer (TCP) to the UDP application. Another important
+feature provided by TCP is **congestion control**, which must then be handled by the UDP
+application.
+<p></br></p>
+
+## TIME_WAIT State
+- the time value = maximum segment lifetime (MSL), sometimes called 2MSL.
+- The MSL is the maximum amount of time that any given IP datagram can live in a network. We know this time is bounded because every datagram contains an 8-bit hop limit with maximum value of 255. Although this is a hop limit and not a true time limit, the assumption is made that a packet with the maximum hop limit of 255 cannot exist in a network for more than MSL seconds.
+- two reasons:
+  - To implement TCP’s full-duplex connection termination reliably.
+  - To allow old duplicate segments to expire in the network.
 
