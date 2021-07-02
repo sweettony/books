@@ -8,7 +8,9 @@
  *  2. does not inherit parent's memory locks( mlock mulock)
  *     为进程锁定一块物理内存，不允许交换。
  *  3. 子类的 set of pending signal 被初始化为空
- *  4.   
+ *  4. 子类不继承 record locks; flock会继承
+ *  5. 子类不继承 timers
+ *  6. 
  * */
 
 #include <unistd.h>
