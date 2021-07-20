@@ -11,7 +11,7 @@
  *  read lock  => must have open with reading 
  *  write lock => must have open with writing
  * when pid is set?
- *  
+ *  when fcntl try to lock a file that is locked by other, the pid is set.
  * */
 
 #include <fcntl.h>
@@ -22,13 +22,54 @@
 
 int file_lock_fork();
 int fork_file_lock();
+int fork_twice();
 
 int main()
 {
-    file_lock_fork();
+    fork_twice();
     return 0;
 }
+int fork_twice()
+{
+    int fd = open("./cc.txt", O_RDWR|O_TRUNC);
+    if(fd < 0)
+    {
+        printf("fd = %d, error = %d\n", fd, errno);        
+        return 0;
+    }
 
+    struct flock process_file_lock;
+    process_file_lock.l_whence = SEEK_SET;
+    process_file_lock.l_start  = 0;
+    process_file_lock.l_len    = 0;
+    process_file_lock.l_type   = F_WRLCK;
+    int ret;
+
+    
+    printf("---------------------WR lock\n");
+    ret = fcntl(fd, F_SETLK, &process_file_lock);
+    if(ret != 0)
+    {
+        printf("fd = %d, error = %d\n", fd, errno);        
+        return 0;
+    }
+    process_file_lock.l_type = F_RDLCK;
+    printf("---------------------RD lock\n");
+    ret = fcntl(fd, F_SETLK, &process_file_lock);
+    if(ret != 0)
+    {
+        printf("fd = %d, error = %d\n", fd, errno);        
+        return 0;
+    }
+    process_file_lock.l_type = F_UNLCK;
+    ret = fcntl(fd, F_SETLK, &process_file_lock);
+    if(ret != 0)
+    {
+        printf("fd = %d, error = %d\n", fd, errno);        
+        return 0;
+    }
+
+}
 int file_lock_fork()
 {
     int fd = open("./cc.txt", O_RDWR|O_TRUNC);
@@ -67,7 +108,7 @@ int file_lock_fork()
     }
     else if (ret > 0)
     {
-        sleep(5);
+
         struct flock file_lock;
         file_lock.l_whence = SEEK_SET;
         file_lock.l_start  = 0;
@@ -86,7 +127,7 @@ int file_lock_fork()
     else
     {
 
-    }
+    } 
     return 0;  
 }
 int fork_file_lock()
