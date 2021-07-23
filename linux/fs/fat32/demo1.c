@@ -39,7 +39,18 @@
 #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 #define FATERR()  printf("%s <%s, %d> err, errno = %s\n", __FILENAME__, __FUNCTION__, __LINE__, strerror(errno));
 
-int init_media(int dev_fd, struct msdos_boot_sector* pbs, int* isfat32)
+struct blk_info
+{
+  
+  __uint16_t  sector_bytes;
+  __uint16_t  track_sectors;
+  __uint16_t  heads;
+  __uint8_t   cluster_sectors;
+  __uint8_t   isfat32;
+  __uint8_t   media;
+};
+
+int init_media(int dev_fd, struct blk_info* bs, int* isfat32)
 {
   struct hd_geometry geometry;
   int ret = ioctl(dev_fd, HDIO_GETGEO, &geometry);
@@ -56,12 +67,12 @@ int init_media(int dev_fd, struct msdos_boot_sector* pbs, int* isfat32)
   }
     
 
-  pbs->secs_track = CT_LE_W(geometry.sectors); /* Set up the geometry information */
-  pbs->heads      = CT_LE_W(geometry.heads);
+  bs->sector_bytes = geometry.sectors /* Set up the geometry information */
+  bs->heads      = geometry.heads
   
-  pbs->media          = (char)0xf8;            /* Set up the media descriptor for a hard drive */
-  pbs->dir_entries[0] = (char)0;               /* Default to 512 entries */
-  pbs->dir_entries[1] = (char)2;
+  bs->media          = (char)0xf8;            /* Set up the media descriptor for a hard drive */
+  bs->dir_entries[0] = (char)0;               /* Default to 512 entries */
+  bs->dir_entries[1] = (char)2;
   
   __uint64_t size = 0;
   ret = ioctl(dev_fd, BLKGETSIZE64, &size);
@@ -72,7 +83,7 @@ int init_media(int dev_fd, struct msdos_boot_sector* pbs, int* isfat32)
   }
   __int32_t sector_size = 0;
   ret = ioctl(dev_fd, BLKSSZGET, &sector_size);
-  pbs->sector_size = sector_size;
+  bs->sector_size = sector_size;
 
   if(ret != 0)
   {
@@ -93,12 +104,12 @@ int init_media(int dev_fd, struct msdos_boot_sector* pbs, int* isfat32)
     __uint8_t sec_per_cluster = sz_mb > (16 < 20) ? 32 : 
                                 sz_mb > (8 < 10)  ? 16 : 
                                 sz_mb > 260       ? 8  : 1;
-    pbs->cluster_size = sec_per_cluster * 512 < sector_size ? 1 : sec_per_cluster * 512 / sector_size;
+    bs->cluster_size = sec_per_cluster * 512 < sector_size ? 1 : sec_per_cluster * 512 / sector_size;
   }
   else
   {
       /* FAT12 and FAT16: start at 4 sectors per cluster */
-      pbs->cluster_size = (char)4;
+      bs->cluster_size = (char)4;
       *isfat32 = 0;
   }
   printf("total = %llu, sector = %d, cluster = %d\n", size, sector_size, pbs->cluster_size);
@@ -113,6 +124,7 @@ static int init_BIOS_params_blk(struct msdos_boot_sector* bs, int isfat32)
 {
   
 }
+
 static int init_bs(struct msdos_boot_sector* bs, int isfat32)
 {
   //jump code
@@ -123,25 +135,19 @@ static int init_bs(struct msdos_boot_sector* bs, int isfat32)
   init_BIOS_params_blk();
 }
 
-typedef struct tag_media_info
-{
-  __uint16_t sector_bytes;
-  __uint8_t  cluster_sectors;
-  __uint8_t  isfat32;
-  __uint8_t  media;
-
-} MEDIA_INFO;
 
 int main(int argc, char* argv[])
 {
   if(argc != 2)
     return 0;
   struct msdos_boot_sector bs;
-  int isfat32 = 1;
+  struct blk_info          blk_info;
+  
   printf("devname = %s\n", argv[1]);
   int fd = open(argv[1], O_RDWR|O_EXCL|O_SYNC);
   printf("fd = %d\n", fd);
-  init_media(fd, &bs, &isfat32);
+
+  init_media(fd, &blk_info);
   init_bs(&bs, isfat32);
   return 0;
 }
